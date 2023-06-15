@@ -4,3 +4,34 @@
   padding: 2rem;
 }
 
+/* Generic padding */
+.main {
+  text-align: center;
+  padding: 25px 50px 25px 50px;
+}
+/* Field params */
+.field {
+  height: 500px;
+  border: 2px solid black;
+  position: relative;
+  overflow-y: hidden;
+}
+/* Dot positioning */
+.dot {
+  border: 1px solid #000;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.object {
+  border: 1px solid #000;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.zombie {
+  border: 1px solid #000;
+  position: absolute;
+  background-color: transparent;
+}
+
