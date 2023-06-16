@@ -38,3 +38,8 @@
   background-color: transparent;
 }
 
+.shot{
+  border: 1px solid #000;
+  position: absolute;
+}
+

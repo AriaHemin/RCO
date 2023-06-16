@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { objectsState } from './atom';
 import Zombie from './zombie';
 import Survivor from './survivor';
+import Shot from './shot';
 
 export default function ZombiesRco (){
+    const [position, setPosition] = useState(350)
+    const [shots, updateShots] = useState([])
     const [objects, updateObjects] = useRecoilState(objectsState);
     const requestRef = useRef();
     const intervalRef = useRef();
@@ -19,6 +22,19 @@ export default function ZombiesRco (){
             y: 0,
           }
     };
+
+    let spawnShot = () =>{
+        updateShots((oldShots) => [...oldShots, createShot()]);
+    }
+
+    let createShot = () => {
+        let x = position
+        return {
+            x,
+            y: 420,
+          }
+    };
+
 
     const advanceStep = useCallback(() => {
         updateObjects((oldDots) => {
@@ -39,6 +55,27 @@ export default function ZombiesRco (){
         requestRef.current = requestAnimationFrame(advanceStep);
     }, [updateObjects]);
 
+
+    const advanceShot = useCallback(() => {
+        updateShots((oldDots) => {
+            const newDots = [];
+            for (let dot of oldDots) {
+                console.log("shot", dot.y)
+                const newY = dot.y - 15 * 5 / 60;
+                if (true) {
+                    newDots.push(
+                        {
+                            ...dot,
+                            y: newY,
+                        }
+                    );
+                }
+            }
+            return newDots;
+        });
+        requestRef.current = requestAnimationFrame(advanceShot);
+    }, [updateShots]);
+
     const spawnDot = useCallback(() => {
         updateObjects((oldDots) => [...oldDots, createDot()]);
     }, [updateObjects]);
@@ -47,10 +84,11 @@ export default function ZombiesRco (){
     useEffect(() => {
         intervalRef.current = setInterval(spawnDot, 3000);
         requestRef.current = requestAnimationFrame(advanceStep);
-    }, [advanceStep, spawnDot])
+        requestRef.current = requestAnimationFrame(advanceShot)
+    }, [advanceStep, spawnDot, advanceShot])
 
     return(
-        <div className="main">
+        <div className="main" >
             <div style={{
                 backgroundImage: `url("/src/zombies/assets/background__r172093591.gif")`,
             }} className="field object-cover bg-bottom" ref={fieldRef}>
@@ -64,7 +102,15 @@ export default function ZombiesRco (){
                         x={x}
                     />
                 })}
-                <Survivor/>
+                {shots.map((dot, index) => {
+                    const x = dot.x + 26
+                    return <Shot
+                        key={`dot-${index}`} 
+                        {...dot}
+                        x={x}
+                    />
+                })}
+                <Survivor setPosition={setPosition} position={position} spawnShot={spawnShot} />
             </div>
         </div>
     )

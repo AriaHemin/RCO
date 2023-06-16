@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import HealthBar from "./healthBar";
 
-export default function Survivor (){
-    const [position, setPosition] = useState(220)
+export default function Survivor (props){
+    // eslint-disable-next-line react/prop-types
+    const {position, setPosition, spawnShot} = props
     const [health, setHealth] = useState(3)
 
     useEffect(() => {
@@ -20,7 +21,7 @@ export default function Survivor (){
         }
 
         function shoot (){
-            console.log("tsh")
+            spawnShot()
         }
 
         const handleKeyDown = e => {
@@ -41,7 +42,7 @@ export default function Survivor (){
     return(
         <>
             <HealthBar health={health} setHealth={setHealth}/>
-            <div className=" inline-block w-16 h-16" style={
+            <div className=" absolute w-16 h-16" style={
                 { 
                     transform: `translateX(${position}px) translateY(430px) rotate(270deg) `
                 }
