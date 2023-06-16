@@ -2,6 +2,8 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+  display: flex;
+  justify-content: center;
 }
 
 /* Generic padding */
@@ -11,10 +13,11 @@
 }
 /* Field params */
 .field {
-  height: 500px;
+  height: 550px;
+  width: 805px;
   border: 2px solid black;
   position: relative;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 /* Dot positioning */
 .dot {

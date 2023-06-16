@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { objectsState } from './atom';
 import Zombie from './zombie';
+import Survivor from './survivor';
 
 export default function ZombiesRco (){
     const [objects, updateObjects] = useRecoilState(objectsState);
@@ -23,7 +24,7 @@ export default function ZombiesRco (){
         updateObjects((oldDots) => {
             const newDots = [];
             for (let dot of oldDots) {
-                const newY = dot.y + 10 * 5 / 60;
+                const newY = dot.y + 5 * 5 / 60;
                 if (newY <= fieldRef.current.offsetHeight - dot.size / 2) {
                     newDots.push(
                         {
@@ -44,7 +45,7 @@ export default function ZombiesRco (){
 
 
     useEffect(() => {
-        intervalRef.current = setInterval(spawnDot, 1000);
+        intervalRef.current = setInterval(spawnDot, 3000);
         requestRef.current = requestAnimationFrame(advanceStep);
     }, [advanceStep, spawnDot])
 
@@ -52,7 +53,7 @@ export default function ZombiesRco (){
         <div className="main">
             <div style={{
                 backgroundImage: `url("/src/zombies/assets/background__r172093591.gif")`,
-            }} className="field" ref={fieldRef}>
+            }} className="field object-cover bg-bottom" ref={fieldRef}>
                 {objects.map((dot, index) => {
                     const x = (
                         fieldRef.current.offsetWidth - dot.size
@@ -63,6 +64,7 @@ export default function ZombiesRco (){
                         x={x}
                     />
                 })}
+                <Survivor/>
             </div>
         </div>
     )
